@@ -1,6 +1,7 @@
 package com.erol.swapi.model;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -8,6 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 
 
@@ -17,6 +21,7 @@ public class planets {
     
     @Id
     @GeneratedValue
+    private long id;
     private String name;
     private String climate;
     private int surface_water;
@@ -27,6 +32,10 @@ public class planets {
     private int orbital_period;
     private long population;
 
+    
+
+     @OneToMany(mappedBy = "planets")
+    private Set<People> peoples;
 
     @CreationTimestamp
     private LocalDate createdAt;

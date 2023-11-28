@@ -1,19 +1,23 @@
 package com.erol.swapi.model;
 
-import java.time.LocalDate;
+import java.util.List;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class People {
     
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private double height;
@@ -22,26 +26,43 @@ public class People {
     private String skin_color;
     private String eye_color;
     private String birth_year;
-
-    @CreationTimestamp
-    private LocalDate creationAt;
-
-    public LocalDate getCreationAt() {
-        return creationAt;
-    }
-    public void setCreationAt(LocalDate creationAt) {
-        this.creationAt = creationAt;
-    }
-    public LocalDate getUpdatedAt() {
-        return updatedAt;
-    }
-    public void setUpdatedAt(LocalDate updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-    @UpdateTimestamp
-    private LocalDate updatedAt;
     
-     public String getName() {
+     @ManyToOne
+    @JoinColumn(name = "planets_id")
+    private planets planets;
+     
+    @ManyToMany(targetEntity = Films.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Films> films;
+ 
+    @ManyToMany
+    @JoinTable(
+            name = "people_starships",
+            joinColumns = @JoinColumn(name = "people_id"),
+            inverseJoinColumns = @JoinColumn(name = "starship_id")
+    )
+    private List<Starship> starships;
+
+    
+     public List<Starship> getStarships() {
+        return starships;
+    }
+    public void setStarships(List<Starship> starships) {
+        this.starships = starships;
+    }
+    public planets getPlanets() {
+        return planets;
+    }
+    public void setPlanets(planets planets) {
+        this.planets = planets;
+    }
+    public List<Films> getFilms() {
+        return films;
+    }
+    public void setFilms(List<Films> films) {
+        this.films = films;
+    }
+   
+    public String getName() {
         return name;
     }
     public void setName(String name) {
