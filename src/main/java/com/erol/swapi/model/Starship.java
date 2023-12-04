@@ -13,12 +13,14 @@ import jakarta.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Starship {
      
     @Id
@@ -37,7 +39,7 @@ public class Starship {
     @ManyToMany(mappedBy = "films")
     private List<Films> films;
     
-  @CreationTimestamp
+    @CreationTimestamp
     private LocalDate creationAt;
 
     @UpdateTimestamp

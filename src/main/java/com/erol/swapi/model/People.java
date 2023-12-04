@@ -1,6 +1,12 @@
 package com.erol.swapi.model;
 
+import java.time.LocalDate;
 import java.util.List;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.erol.swapi.constant.Gender;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,13 +20,17 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class People {
     
     @Id
@@ -34,6 +44,7 @@ public class People {
     private String skin_color;
     private String eye_color;
     private String birth_year;
+    
     
      @ManyToOne
     @JoinColumn(name = "planets_id")
@@ -49,6 +60,18 @@ public class People {
             inverseJoinColumns = @JoinColumn(name = "starship_id")
     )
     private List<Starship> starships;
+    private Gender gender;
+
+    @ManyToMany(targetEntity = vehicles.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<vehicles> vehicles;
+    
+    @CreationTimestamp
+    private LocalDate creationAt;
+
+    @UpdateTimestamp
+    private LocalDate updatedAt;
+
+    
 
     
     
