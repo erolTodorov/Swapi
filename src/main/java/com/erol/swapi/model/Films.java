@@ -45,8 +45,15 @@ public class Films {
             name = "films_starships",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "starship_id")
-    )
+    ) 
     private List<Films> films;
+    
+    @ManyToMany
+    @JoinTable (name = "films_planets",
+                joinColumns =  @JoinColumn(name = "film_id"),
+                inverseJoinColumns = @JoinColumn(name = "planets_id")
+        )
+    private List<Films> films1; // zashto se sluchva taka ,ne moga li da polzvam edin list
 
     @CreationTimestamp
     private LocalDate createdAt;

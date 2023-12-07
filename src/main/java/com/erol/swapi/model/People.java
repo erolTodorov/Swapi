@@ -38,8 +38,8 @@ public class People {
     @Setter(value = AccessLevel.NONE)
     private long id;
     private String name;
-    private double height;
-    private double mass;
+    private int height;
+    private int mass;
     private String hair_color;
     private String skin_color;
     private String eye_color;

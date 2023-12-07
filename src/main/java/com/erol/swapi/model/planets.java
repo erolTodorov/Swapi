@@ -1,14 +1,18 @@
 package com.erol.swapi.model;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,7 +46,10 @@ public class planets {
 
      @OneToMany(mappedBy = "planets")
     private Set<People> peoples;
-
+     
+     @ManyToMany(targetEntity = Films.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Films> films;
+ 
     @CreationTimestamp
     private LocalDate createdAt;
 

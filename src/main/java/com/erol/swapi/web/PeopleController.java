@@ -22,6 +22,7 @@ import com.erol.swapi.error.NotFoundObjectException;
 import com.erol.swapi.model.Films;
 import com.erol.swapi.model.People;
 import com.erol.swapi.model.Starship;
+import com.erol.swapi.model.vehicles;
 import com.erol.swapi.repository.FilmRepository;
 import com.erol.swapi.repository.PeopleRepository;
 import com.erol.swapi.repository.StarshipRepository;
@@ -30,7 +31,10 @@ import com.erol.swapi.web.dto.CreatePeopleRequest;
 import com.erol.swapi.web.dto.UpdatePeopleRequest;
 import com.erol.swapi.web.dto.UpdatePeopleStarshipsRequest;
 import com.erol.swapi.web.dto.UpdatePeopleStarshipsResponse;
+import com.erol.swapi.web.dto.UpdatePeopleVehicleRequest;
 import com.erol.swapi.web.dto.UpdatePeopleVehicleResponse;
+
+import jakarta.validation.Valid;
 
 
 
@@ -63,8 +67,9 @@ public class PeopleController {
     }
 
     @PostMapping(value="/people")
-    private People createPeople(@RequestBody CreatePeopleRequest peopleRequest){
-
+    private People createPeople(@RequestBody  @Valid CreatePeopleRequest peopleRequest){
+        
+        
          List<Films> films = new ArrayList<>();
         if (peopleRequest.getFilmIds() != null) {
             films = (List<Films>) filmRepository.findAllById(peopleRequest.getFilmIds());
@@ -79,7 +84,7 @@ public class PeopleController {
    
     @PatchMapping(value = "/people/{id}")
     private People updatPeople(@PathVariable Long id,
-    @RequestBody UpdatePeopleRequest peopleRequest){
+    @RequestBody  UpdatePeopleRequest peopleRequest){
 
         People people = peopleRepository.findById(id).get();
 
@@ -146,19 +151,20 @@ public class PeopleController {
     }
 
     
-    // @PutMapping("/people/{id}/vehicles")
-    // private UpdatePeopleVehicleResponse updateVehicle(@PathVariable Long id,
-    // @RequestBody UpdatePeopleVehicleRequest peopleVehicles){
-    //     People people = peopleRepository.findById(id).get();
+    @PutMapping("/people/{id}/vehicles")
+    private UpdatePeopleVehicleResponse updateVehicle(@PathVariable Long id,
+    @RequestBody UpdatePeopleVehicleRequest peopleVehicles){
+        People people = peopleRepository.findById(id).get();
 
-    //     List<vehicles> vehiclesInDB = (List<vehicles>) vehiclesRepository.findAllById(peopleVehicles.getVehiclesIds());
-    //     people.setVehicles((List<vehicles>) (vehiclesInDB.stream().collect(Collectors.toSet())));
+        List<vehicles> vehiclesInDB = (List<vehicles>) vehiclesRepository.findAllById(peopleVehicles.getVehiclesIds());
+        people.setVehicles((List<vehicles>) (vehiclesInDB.stream().collect(Collectors.toSet())));
 
-    //     Set<Long> vehicleIds = peopleRepository.save(people).getVehicles().stream().map(p -> p.getId())
-    //     .collect(Collectors.toSet());
+        Set<Long> vehicleIds = peopleRepository.save(people).getVehicles().stream().map(p -> p.getId())
+        .collect(Collectors.toSet());
 
-    //     return UpdatePeopleVehicleResponse.builder().vehiclesIds(vehicleIds).build();
-    // }
+        return UpdatePeopleVehicleResponse.builder().vehiclesIds(vehicleIds).build();
+    }
+    
 
     @GetMapping("/people/{id}/vehicles")
     private UpdatePeopleVehicleResponse updateVehicles(@PathVariable Long id){

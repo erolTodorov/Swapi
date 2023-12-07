@@ -1,5 +1,6 @@
 package com.erol.swapi.web;
 
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erol.swapi.error.InvalidObjectExeption;
 import com.erol.swapi.error.MissingFileUploadException;
 import com.erol.swapi.error.NotFoundObjectException;
 
@@ -48,5 +50,12 @@ public class ExceptionHandlerAdvice  {
         PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(UUID.randomUUID())
                 .message("Method not allowed: " + ex.getMethod()).build();
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(httpEx);
+    }
+
+    @ExceptionHandler(InvalidObjectExeption.class)
+    public ResponseEntity<PeopleApiHttpException> invalidObject(InvalidObjectExeption e) {
+        PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(e.getId())
+                .message(e.getMessage()).errors(e.getConstraintViolations()).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
     }
 }
