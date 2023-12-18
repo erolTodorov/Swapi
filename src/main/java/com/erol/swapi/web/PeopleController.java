@@ -24,9 +24,11 @@ import com.erol.swapi.model.People;
 import com.erol.swapi.model.Starship;
 import com.erol.swapi.model.vehicles;
 import com.erol.swapi.repository.FilmRepository;
+import com.erol.swapi.repository.PeoplePagingRepository;
 import com.erol.swapi.repository.PeopleRepository;
 import com.erol.swapi.repository.StarshipRepository;
 import com.erol.swapi.repository.VehiclesRepository;
+import com.erol.swapi.service.ObjectValidator;
 import com.erol.swapi.web.dto.CreatePeopleRequest;
 import com.erol.swapi.web.dto.UpdatePeopleRequest;
 import com.erol.swapi.web.dto.UpdatePeopleStarshipsRequest;
@@ -53,6 +55,15 @@ public class PeopleController {
     @Autowired
     private VehiclesRepository vehiclesRepository;
 
+     @Autowired
+    private ObjectValidator validator;
+
+    // @Autowired
+    // public PeopleMapper peopleMapper;
+
+    @Autowired
+    private PeoplePagingRepository peoplePagingRepository;
+
 
      @GetMapping(value="/people")
     private List<People> getAllPeoples(){
@@ -66,7 +77,7 @@ public class PeopleController {
          });
     }
 
-    @PostMapping(value="/people")
+     @PostMapping(value="/people")
     private People createPeople(@RequestBody  @Valid CreatePeopleRequest peopleRequest){
         
         
@@ -81,7 +92,7 @@ public class PeopleController {
 
         return peopleRepository.save(people);
     }
-   
+    
     @PatchMapping(value = "/people/{id}")
     private People updatPeople(@PathVariable Long id,
     @RequestBody  UpdatePeopleRequest peopleRequest){
