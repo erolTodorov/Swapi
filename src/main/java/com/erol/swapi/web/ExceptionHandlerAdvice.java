@@ -10,6 +10,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erol.swapi.error.AuthenticationFailedException;
 import com.erol.swapi.error.InvalidObjectExeption;
 import com.erol.swapi.error.MissingFileUploadException;
 import com.erol.swapi.error.NotFoundObjectException;
@@ -56,6 +57,22 @@ public class ExceptionHandlerAdvice  {
     public ResponseEntity<PeopleApiHttpException> invalidObject(InvalidObjectExeption e) {
         PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(e.getId())
                 .message(e.getMessage()).errors(e.getConstraintViolations()).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
+    }
+
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<PeopleApiHttpException> authenticationFailed(
+        AuthenticationFailedException e ){
+            PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(e.getId())
+            .message(e.getMessage()+ ".Cause" + e.getConcreteError()).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
+        
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<PeopleApiHttpException> illegalArgument(IllegalArgumentException e ){
+        PeopleApiHttpException httpEx = PeopleApiHttpException.builder().errorId(UUID.randomUUID())
+        .message(e.getMessage()).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
     }
 }
