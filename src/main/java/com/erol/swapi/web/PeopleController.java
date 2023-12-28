@@ -137,7 +137,7 @@ public class PeopleController {
         List<Starship> starshipsInDB = 
               (List<Starship>) starshipRepository.findAllById(peopleStarships.getStarshipsIds());
 
-        people.setStarships((List<Starship>) (starshipsInDB.stream().collect(Collectors.toSet()));
+        people.setStarships((List<Starship>) (starshipsInDB.stream().collect(Collectors.toSet())));
 
 
         Set<Long> starshipsIds = peopleRepository.save(people).getStarships().stream().map(p -> p.getId())
