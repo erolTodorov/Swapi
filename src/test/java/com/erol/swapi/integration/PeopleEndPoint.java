@@ -36,4 +36,15 @@ public class PeopleEndPoint {
                .andExpect(jsonPath("$.name").value("Luck"))
                .andExpect(jsonPath("$.id").isNotEmpty());
     }
+
+    void addValidPlanets() throws Exception{
+        mock.perform(post("/planets").header(HttpHeaders.CONTENT_TYPE, "application/json").content("""
+                 {
+            "name": "Planets",
+            "climate": "suh" ,
+            "diameters": 1.88
+        }
+                """)).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Planets"));
+    }
 }

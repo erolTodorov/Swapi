@@ -6,11 +6,13 @@ import com.erol.swapi.constant.Gender;
 import com.erol.swapi.model.planets;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 public class CreatePeopleRequest {
     
     @NotBlank
